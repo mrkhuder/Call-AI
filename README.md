@@ -36,6 +36,15 @@ alembic -c alembic.ini upgrade head      # apply migrations
 alembic -c alembic.ini revision --autogenerate -m "describe change"
 ```
 
+#### Tests
+
+```bash
+cd backend
+pytest
+```
+
+The bundled `pytest.ini` enables quiet reporting and configures import paths, making it CI-ready out of the box.
+
 ### Frontend
 
 ```bash
