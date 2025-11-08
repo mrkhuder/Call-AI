@@ -29,6 +29,13 @@ uvicorn app.main:app --reload
 
 Swagger UI will be available at `http://localhost:8000/docs`.
 
+Database migrations (Alembic) run automatically on API startup. To manage them manually:
+
+```bash
+alembic -c alembic.ini upgrade head      # apply migrations
+alembic -c alembic.ini revision --autogenerate -m "describe change"
+```
+
 ### Frontend
 
 ```bash

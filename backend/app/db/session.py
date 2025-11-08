@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Iterator
 
-from sqlmodel import Session, SQLModel, create_engine
+from alembic import command
+from alembic.config import Config
+from sqlmodel import Session, create_engine
 
 from ..core.config import settings
 
@@ -16,8 +19,18 @@ def _build_engine():
 engine = _build_engine()
 
 
+def get_alembic_config() -> Config:
+    base_path = Path(__file__).resolve().parents[2]
+    alembic_ini_path = base_path / "alembic.ini"
+    cfg = Config(str(alembic_ini_path))
+    cfg.set_main_option("script_location", str(base_path / "alembic"))
+    cfg.set_main_option("sqlalchemy.url", settings.db_url)
+    return cfg
+
+
 def init_db() -> None:
-    SQLModel.metadata.create_all(engine)
+    cfg = get_alembic_config()
+    command.upgrade(cfg, "head")
 
 
 def get_session() -> Iterator[Session]:

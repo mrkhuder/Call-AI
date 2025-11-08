@@ -27,6 +27,7 @@ CareFlow AI orchestrates scheduling intelligence across three workstreams:
 - **Configuration**: `app/core/config.py` uses Pydantic Settings to load environment variables (`.env`).
 - **Logging**: Structured logging via `logging.config.dictConfig`.
 - **Testing**: `backend/tests/test_health.py` ensures base health endpoint coverage.
+- **Database Migrations**: Alembic manages schema evolution; the runtime boots with an `upgrade head` to keep databases in sync.
 
 ### Integration Points (Future)
 
