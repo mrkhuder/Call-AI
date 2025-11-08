@@ -13,6 +13,8 @@ coverage/
 
 ml/data/
 ml/models/
+backend/careflow.db
+careflow.db
 
 .env
 .DS_Store

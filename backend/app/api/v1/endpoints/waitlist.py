@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
+from sqlmodel import Session
 
 from ....schemas.waitlist import WaitlistEntry, WaitlistNotification
+from ....db.session import get_session
 from ....services import WaitlistService
 
 
-def get_waitlist_service() -> WaitlistService:
-    return WaitlistService()
+def get_waitlist_service(session: Session = Depends(get_session)) -> WaitlistService:
+    return WaitlistService(session=session)
 
 
 router = APIRouter()

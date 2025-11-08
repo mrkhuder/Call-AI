@@ -18,9 +18,12 @@ CareFlow AI orchestrates scheduling intelligence across three workstreams:
   - `api.v1.analytics` – Returns no-show risk explanations and forecast data.
 - **Services Layer** sits in `app/services`:
   - `SchedulingService` coordinates EHR integration (currently mocked) and calls the no-show model.
-  - `ReminderService` prepares reminder payloads (future work: queue dispatch via messaging providers).
+  - `ReminderService` prepares reminder payloads and delegates delivery to a messaging provider abstraction.
   - `WaitlistService` manages eligibility and messaging for openings.
   - `AnalyticsService` aggregates model outputs and forecasting heuristics.
+- **Integrations** (`app/integrations`):
+  - `MockEHRClient` simulates a FHIR-compatible scheduling system. It can be swapped for a real adapter when ready.
+  - `MockMessagingProvider` emulates SMS/e-mail delivery; replace with Twilio/SendGrid providers behind the shared interface.
 - **Configuration**: `app/core/config.py` uses Pydantic Settings to load environment variables (`.env`).
 - **Logging**: Structured logging via `logging.config.dictConfig`.
 - **Testing**: `backend/tests/test_health.py` ensures base health endpoint coverage.
@@ -51,6 +54,7 @@ CareFlow AI orchestrates scheduling intelligence across three workstreams:
   - Reads dataset from `ml/data/appointments.csv` or generates synthetic data for development.
   - Builds feature preprocessing (OneHot + scaling) and trains Gradient Boosting model.
   - Saves pipeline artifact and metrics to `ml/models/no_show_v1/`.
+- The FastAPI service lazily loads the pipeline artifact (when present) to score appointments in real time, falling back to heuristics if unavailable.
 - Future enhancements:
   - Replace synthetic data generator with production EHR extracts.
   - Introduce feature/store integration and drift monitoring.

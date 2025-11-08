@@ -4,8 +4,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .api.v1.router import api_router
+from . import models  # noqa: F401  # ensure SQLModel tables are registered
 from .core.config import settings
 from .core.logging import configure_logging
+from .db.session import init_db
 
 
 def create_app() -> FastAPI:
@@ -39,6 +41,10 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(api_router, prefix=settings.api_prefix)
+
+    @app.on_event("startup")
+    async def on_startup() -> None:  # pragma: no cover
+        init_db()
 
     @app.get("/healthz", tags=["health"])
     async def healthcheck() -> dict[str, str]:

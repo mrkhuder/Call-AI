@@ -48,12 +48,27 @@ python -m pipelines.no_show --config config.yml
 
 The command trains a baseline no-show classifier (using synthetic data if a source dataset is absent) and drops artifacts in `ml/models/no_show_v1/`.
 
+### Docker (Optional)
+
+Spin up the full stack with hot-reload friendly containers:
+
+```bash
+docker compose up --build
+```
+
+Run the ML training container on demand:
+
+```bash
+docker compose run --rm --profile ml ml-pipeline
+```
+
 ## Key Capabilities (Initial Slice)
 
 - **Self-Scheduling API** – Validates requests, produces personalized slot suggestions, and scores no-show risk.
-- **Reminders & Outreach** – Schedules multi-channel reminders and adapts cadence based on risk profile.
+- **Reminders & Outreach** – Schedules multi-channel reminders, persists delivery metadata, and routes dispatch through a provider abstraction (mock today).
 - **Waitlist Automation** – Registers patient preferences and simulates rapid-fill notifications when slots open.
 - **Analytics** – Provides demand forecasting stubs and interpretable no-show risk summaries.
+- ML pipeline artifacts (`ml/models/no_show_v1/pipeline.pkl`) are auto-loaded by the API when available, with heuristics as a safety fallback.
 
 ## Next Steps
 
