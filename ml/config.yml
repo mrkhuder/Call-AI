@@ -1,0 +1,31 @@
+experiment_name: no_show_v1
+random_state: 42
+train:
+  input_path: data/appointments.csv
+  target_column: no_show
+  date_column: appointment_start
+  test_size: 0.2
+  validation_size: 0.1
+  categorical_features:
+    - patient_age_band
+    - visit_type
+    - provider_specialty
+    - channel
+    - insurance_plan
+  numeric_features:
+    - lead_time_days
+    - distance_miles
+    - prior_no_show_rate
+    - prior_cancellations
+model:
+  type: gradient_boosting
+  params:
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 3
+    subsample: 0.8
+monitoring:
+  metrics:
+    - roc_auc
+    - recall_at_top_k
+  drift_detection: population_stability_index

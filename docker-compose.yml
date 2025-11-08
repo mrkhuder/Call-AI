@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CAREFLOW_ENV=development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./frontend
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    environment:
+      - VITE_API_URL=http://api:8000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/public:/app/public
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  ml-pipeline:
+    build:
+      context: ./ml
+    command: python -m pipelines.no_show --config config.yml
+    volumes:
+      - ./ml/pipelines:/app/pipelines
+      - ./ml/config.yml:/app/config.yml
+      - ./ml/models:/app/models
+    profiles: ["ml"]
+    restart: "no"
