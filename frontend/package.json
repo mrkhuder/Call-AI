@@ -1,0 +1,35 @@
+{
+  "name": "careflow-ai-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.45.0",
+    "axios": "^1.7.7",
+    "dayjs": "^1.11.11",
+    "lucide-react": "^0.452.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.1"
+  }
+}
